@@ -3,8 +3,8 @@
   box-shadow: none;
 }
 
-.reveal .slides {
-  width: 1600px;
+div.slides {
+  width: 1600px !important;
 }
 
 .reveal pre {
