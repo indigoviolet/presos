@@ -18,6 +18,16 @@
  * EXPLAIN output
  * Redshift SQL & Hive SQL
 
+<!-- Caveats about I am not an expert -->
+
+--- 
+
+Where in the stack is the perf bottleneck?
+
++++
+
+![Layers](images/perf-layers.png)
+
 ---
 
 
