@@ -4,8 +4,6 @@
 
 ### Lunch & Learn (Apr 21, 2017)
 
-##### viyer
-
 ---
 
 ## Overview
