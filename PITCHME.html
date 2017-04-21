@@ -126,6 +126,10 @@ add_method_tracer :contacts_results, 'ClientSearch/contacts_results'
 
 <hr />
 
+<h2>Profiling Ruby</h2>
+
+<p>+++</p>
+
 <p><code>!debug</code></p>
 
 <ul>
@@ -136,9 +140,52 @@ add_method_tracer :contacts_results, 'ClientSearch/contacts_results'
 
 <p>[demo]</p>
 
-<p>+++</p>
+<hr />
 
 <p><a href="https://github.com/finventures/fin-core-beta/blob/master/.pryrc"><code>.pryrc</code></a></p>
+
+<p>Custom commands:</p>
+
+<ul>
+<li>debugger</li>
+<li><code>dp</code> | <code>ep</code></li>
+<li>backtrace</li>
+<li>autocompleter</li>
+<li>prompt</li>
+</ul>
+
+<hr />
+
+<p><code>Benchmark</code></p>
+
+<p>```ruby</p>
+
+<p>rails> Benchmark.bm do |x|
+*   x.report { User.find(2) }
+* end
+  user     system      total        real
+  0.020000   0.010000   0.030000 (  0.031872)</p>
+
+<p>rails> Benchmark.realtime { User.find 2 }
+=> 0.004197215981548652</p>
+
+<p>```</p>
+
+<p>+++</p>
+
+<p><code>RubyProf</code></p>
+
+<p>```ruby</p>
+
+<blockquote>
+  <p>result = RubyProf.profile { AgentState.event_loop }
+printer = RubyProf::CallStackPrinter.new(result)
+printer.print(open("./profile2.html", "w"))</p>
+</blockquote>
+
+<p>$> open profile2.html</p>
+
+<p>```</p>
 
 <hr />
 

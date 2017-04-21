@@ -107,6 +107,10 @@ add_method_tracer :contacts_results, 'ClientSearch/contacts_results'
 
 ---
 
+## Profiling Ruby
+
++++
+
 `!debug`
 
 * Turn log level to DEBUG (shows Elasticsearch queries)
@@ -115,8 +119,49 @@ add_method_tracer :contacts_results, 'ClientSearch/contacts_results'
 
 [demo]
 
-+++
+---
 
 [`.pryrc`](https://github.com/finventures/fin-core-beta/blob/master/.pryrc)
+
+Custom commands:
+
+* debugger
+* `dp` | `ep`
+* backtrace
+* autocompleter
+* prompt
+
+---
+
+`Benchmark`
+
+```ruby
+
+rails> Benchmark.bm do |x|
+*   x.report { User.find(2) }
+* end
+  user     system      total        real
+  0.020000   0.010000   0.030000 (  0.031872)
+
+
+rails> Benchmark.realtime { User.find 2 }
+=> 0.004197215981548652
+
+```
+
++++
+
+`RubyProf`
+
+
+```ruby
+
+> result = RubyProf.profile { AgentState.event_loop }
+> printer = RubyProf::CallStackPrinter.new(result)
+> printer.print(open("./profile2.html", "w"))
+
+$> open profile2.html
+
+```
 
 ---
