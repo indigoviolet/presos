@@ -322,6 +322,10 @@ Goal: Find a good path fast enough so that it actually matters
 
 +++
 
+![plan](diagrams/query-plan.png)
+
++++
+
 ### Executor
 
 * stream-processing style dependency graph
