@@ -26,7 +26,7 @@
 
 +++
 
-![](diagrams/perf-stack.png)
+![perf-stack](diagrams/perf-stack.png)
 
 ---
 
@@ -34,7 +34,7 @@
 
 +++
 
-![](diagrams/opt-loop.png)
+![opt-loop](diagrams/opt-loop.png)
 
 ---
 
@@ -42,6 +42,6 @@
 
 +++
 
-![](diagrams/profilers.png)
+![profilers](diagrams/profilers.png)
 
 ----
