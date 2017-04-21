@@ -24,15 +24,12 @@
 
 ## Where in the stack is the perf bottleneck?
 
-+++
-
 ![perf-stack](diagrams/perf-stack.png)
 
 ---
 
 ## The optimization loop
 
-+++
 
 ![opt-loop](diagrams/opt-loop.png)
 
@@ -40,7 +37,6 @@
 
 ## Profilers
 
-+++
 
 ![profilers](diagrams/profilers.png)
 
