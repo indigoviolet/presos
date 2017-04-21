@@ -217,7 +217,8 @@ second element from Sz , and so on.
 
 * Can leave versions lying around, bloating the db and indexes
 * `VACUUM` cleans these up
-* Postgres has `auto_vacuum`. Tuning this is a big deal for perf
+* Postgres has `auto_vacuum`. Tuning frequency of vacuuming (& analyzing) is a
+  big deal for perf
 
 +++
 
@@ -305,7 +306,11 @@ Replace Views with underlying query tree
 
 +++
 
-### Cost analysis
+![plan](diagrams/query-plan.png)
+
++++
+
+### Cost analysis across many possible plans
 
 `postgresql.conf`
 
@@ -318,11 +323,19 @@ cpu_operator_cost = 0.0025             # Perform an operation
 
 ```
 
-Goal: Find a good path fast enough so that it actually matters
+Goal: Find a good plan fast enough so that it actually matters
 
 +++
 
-![plan](diagrams/query-plan.png)
+### Statistics
+
+* Estimate # of rows returned by query (each step in plan)
+* `ANALYZE` updates statistics
+* `auto_vacuum` runs `ANALYZE`
+* e.g. `n_distinct`, `most_common_vals` (and their frequencies),
+  `histogram_bounds` (distribution of values)
+
+👎  Assumes independence of columns
 
 +++
 
@@ -331,5 +344,9 @@ Goal: Find a good path fast enough so that it actually matters
 * stream-processing style dependency graph
 * Parent node _pulls_ on its children
 * i.e. time to first row matters, as does generating all rows
+
+---
+
+🥑
 
 ---
