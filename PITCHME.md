@@ -9,9 +9,8 @@
 ## Overview
 
 * Diagnosing perf problems
-* ActiveRecord -> EXPLAIN (SQL internals)
-* Bonus 1 (Redshift)
-* Bonus 2 (Hive)
+* ActiveRecord -> EXPLAIN
+* Bonuses (1, 2)
 
 <!-- Caveats about I am not an expert -->
 
