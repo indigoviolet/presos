@@ -273,20 +273,60 @@ second element from Sz , and so on.
 <h2>Log-table duality</h2>
 
 <blockquote>
-Logs are tables in motion
+Logs are tables in motion -- Jay Kreps
 </blockquote>
 
 <p>cf. Streams (Kafka/Kinesis etc.)</p>
 
 <hr />
 
+<p>🐡</p>
+
+<hr />
+
 <h3><code>ActiveRecord</code>, <code>arel</code> etc</h3>
+
+<p>(Pat Shaughnessy)</p>
 
 <p><img src="diagrams/arel-1.png" alt="arel-1" title="" /></p>
 
 <p>+++</p>
 
 <p><img src="diagrams/arel-2.png" alt="arel-2" title="" /></p>
+
+<p>+++</p>
+
+<p><img src="diagrams/arel-3.png" alt="arel-3" title="" /></p>
+
+<hr />
+
+<h3>The Database</h3>
+
+<p>+++</p>
+
+<p><img src="diagrams/libpq.png" alt="libpq" title="" /></p>
+
+<p>+++</p>
+
+<h2>Parser -> Rewriter -> Optimizer -> Cost analysis -> Plan -> Execute</h2>
+
+<p>+++</p>
+
+<p><img src="diagrams/parser.png" alt="parser" title="" /></p>
+
+<p>+++</p>
+
+<p>Rewriter: Replace Views with underlying query tree</p>
+
+<p>+++</p>
+
+<h3>Optimizer</h3>
+
+<ul>
+<li>How to scan tables</li>
+<li>How to join tables</li>
+<li>Inlining, predicate pushdown etc</li>
+</ul>
 
 <hr />
 
