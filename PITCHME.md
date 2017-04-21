@@ -10,8 +10,6 @@
 
 ## Overview
 
-+++
-
 * Diagnosing perf problems
 * ActiveRecord -> EXPLAIN (SQL internals)
 * Bonus 1 (Redshift)
@@ -567,7 +565,7 @@ enable_tidscan = on
 
 ---
 
-🌼
+🚗
 
 ---
 
@@ -601,6 +599,10 @@ enable_tidscan = on
 ### `SORTKEY`
 
 * Filter keys should be `SORTKEY`
+
+---
+
+🐝
 
 ---
 
