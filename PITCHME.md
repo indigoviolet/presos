@@ -500,11 +500,27 @@ serialized_value    10000
 
 +++
 
-### Nested loop join
+### Nested loop join with Sequential scan
 
 ![nested-loop-join](diagrams/nested-loop-join.png)
 
+(small tables)
+
 +++
 
+### Nested loop join with Index scan
 
+![nested-loop-index-join](diagrams/nested-loop-index-join.png)
+
++++
+
+### Hash join
+
+![hash-join](diagrams/hash-join.png)
+
++++
+
+### Merge join
+
+![merge-join](diagrams/merge-join.png)
 ---
