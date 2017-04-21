@@ -44,7 +44,7 @@
 
 ![profilers](diagrams/profilers.png)
 
-----
+---
 
 ## NewRelic
 
