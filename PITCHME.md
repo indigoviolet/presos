@@ -22,22 +22,26 @@
 
 --- 
 
-Where in the stack is the perf bottleneck?
+## Where in the stack is the perf bottleneck?
 
 +++
 
-![](images/perf-layers.png)
+![](diagrams/perf-stack.png)
 
 ---
 
-![](images/opt-loop.png)
-
----
-
-Profilers
+## The optimization loop
 
 +++
 
-![](images/profilers.png)
+![](diagrams/opt-loop.png)
+
+---
+
+## Profilers
+
++++
+
+![](diagrams/profilers.png)
 
 ----
