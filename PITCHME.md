@@ -368,7 +368,9 @@ Goal: Find a good plan fast enough so that it actually matters
 
 +++
 
-## Sequential scan (when _selectivity_ is low)
+## Sequential scan
+
+(when _selectivity_ is low)
 
 ![seq-scan](diagrams/seq-scan.png)
 
@@ -384,7 +386,9 @@ Seq Scan on users  (cost=0.00..992.41 rows=3241 width=4)
 
 +++
 
-## Index scan (when _selectivity_ is high)
+## Index scan
+
+(when _selectivity_ is high)
 
 ![index-scan](diagrams/index-scan.png)
 
@@ -432,4 +436,75 @@ Bitmap Heap Scan on users  (cost=4.53..89.50 rows=24 width=1713)
             Index Cond: ((id > 20) AND (id < 50))
 
 ```
+
+🍫  can combine multiple indices
+---
+
+🔬
+
+---
+
+## `EXPLAIN`
+
+* `EXPLAIN`: plan + estimated costs
+* `EXPLAIN ANALYZE`: plan + estimated costs + *actual* costs after execution
+* `EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)` : more stats about
+  how much data was read etc.
+
+
++++
+
+```
+
+(cost=4.53..89.50 rows=24 width=1713)
+
+(actual time=0.007..0.133 rows=100 loops=1)
+
+```
+
+* starting cost / actual starting time
+* total cost / actual total time
+* rows
+* width
+* loops
+
+
++++
+
+### Control row estimates through statistics target
+
+
+```
+show default_statistics_target
+100
+```
+
+```
+SELECT attname, attstattarget
+FROM   pg_attribute
+WHERE  attrelid = 'entry_properties'::regclass;
+
+----------------
+entry_id    10000
+schema_id    10000
+serialized_value    10000
+...
+
+```
+
+`ALTER TABLE SET STATISTICS`
+
+---
+
+## Joins 🙏
+
++++
+
+### Nested loop join
+
+![nested-loop-join](diagrams/nested-loop-join.png)
+
++++
+
+
 ---

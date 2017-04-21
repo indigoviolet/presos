@@ -413,7 +413,9 @@ cpu</em>operator_cost = 0.0025             # Perform an operation</p>
 
 <p>+++</p>
 
-<h2>Sequential scan (when <em>selectivity</em> is low)</h2>
+<h2>Sequential scan</h2>
+
+<p>(when <em>selectivity</em> is low)</p>
 
 <p><img src="diagrams/seq-scan.png" alt="seq-scan" title="" /></p>
 
@@ -429,7 +431,9 @@ select id from users where id is not null;</p>
 
 <p>+++</p>
 
-<h2>Index scan (when <em>selectivity</em> is high)</h2>
+<h2>Index scan</h2>
+
+<p>(when <em>selectivity</em> is high)</p>
 
 <p><img src="diagrams/index-scan.png" alt="index-scan" title="" /></p>
 
@@ -476,7 +480,79 @@ select * from users where id > 20 and id &lt; 50;</p>
     ->  Bitmap Index Scan on users_pkey  (cost=0.00..4.52 rows=24 width=0)
             Index Cond: ((id > 20) AND (id &lt; 50))</p>
 
-<h2>```</h2>
+<p>```</p>
+
+<h2>🍫  can combine multiple indices</h2>
+
+<p>🔬</p>
+
+<hr />
+
+<h2><code>EXPLAIN</code></h2>
+
+<ul>
+<li><code>EXPLAIN</code>: plan + estimated costs</li>
+<li><code>EXPLAIN ANALYZE</code>: plan + estimated costs + <em>actual</em> costs after execution</li>
+<li><code>EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)</code> : more stats about
+how much data was read etc.</li>
+</ul>
+
+<p>+++</p>
+
+<p>```</p>
+
+<p>(cost=4.53..89.50 rows=24 width=1713)</p>
+
+<p>(actual time=0.007..0.133 rows=100 loops=1)</p>
+
+<p>```</p>
+
+<ul>
+<li>starting cost / actual starting time</li>
+<li>total cost / actual total time</li>
+<li>rows</li>
+<li>width</li>
+<li>loops</li>
+</ul>
+
+<p>+++</p>
+
+<h3>Control row estimates through statistics target</h3>
+
+<p><code>
+show default_statistics_target
+100
+</code></p>
+
+<p>```
+SELECT attname, attstattarget
+FROM   pg<em>attribute
+WHERE  attrelid = 'entry</em>properties'::regclass;</p>
+
+<hr />
+
+<p>entry<em>id    10000
+schema</em>id    10000
+serialized_value    10000
+...</p>
+
+<p>```</p>
+
+<p><code>ALTER TABLE SET STATISTICS</code></p>
+
+<hr />
+
+<h2>Joins 🙏</h2>
+
+<p>+++</p>
+
+<h3>Nested loop join</h3>
+
+<p><img src="diagrams/nested-loop-join.png" alt="nested-loop-join" title="" /></p>
+
+<p>+++</p>
+
+<hr />
 
 </body>
 </html>
