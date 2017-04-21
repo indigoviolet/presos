@@ -20,14 +20,12 @@
 
 <!-- Caveats about I am not an expert -->
 
---- 
+---
 
 Where in the stack is the perf bottleneck?
 
-+++
++++?image=images/perf-layers.png
 
-![Layers](images/perf-layers.png)
+
 
 ---
-
-
