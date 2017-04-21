@@ -378,7 +378,7 @@ Goal: Find a good plan fast enough so that it actually matters
 
 ![index-scan](diagrams/index-scan.png)
 
-🍩  Index-_only_ scans: when **all** `SELECT` columns are indexed
+🍩  Index-_only_ scans: when **all** columns involved are indexed
 
 +++
 
