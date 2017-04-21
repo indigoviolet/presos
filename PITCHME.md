@@ -1,6 +1,6 @@
 ---
 
-# Perf (mostly SQL)
+# Perf, SQL, etc.
 
 ### Lunch & Learn Apr 20, 2017
 
@@ -163,5 +163,58 @@ rails> Benchmark.realtime { User.find 2 }
 $> open profile2.html
 
 ```
+
+---
+
+🌝
+
+---
+
+# SQL
+
+* Declarative (v. imperative). cf. `select, map, group_by` v. `for` loops
+* __Structured English Query Language__ (`SEQUEL`) -> `SQL`
+* Ingres(s) (Berkeley) -> Postgres (1980's)
+
++++
+
+* [EF Codd, a Relational Algebra](http://www.morganslibrary.net/files/codd-1970.pdf)
+
+## Relation
+
+```
+
+Given sets X1 , S, , . . . , S, (not necessarily
+distinct), R is a relation on these n sets if it is a set of ntuples
+each of which has its first element from S1, its
+second element from Sz , and so on.
+
++++
+
+## What is ACID-compliant?
+
+* Atomicity: Transaction that rolls back completely or commits completely
+* Consistency: Transaction rolls back on trigger failure or validation violation
+* Isolation: Concurrent transactions
+* Durability: Write-ahead log
+
++++
+
+## Transactions are perspectival!
+
+* MVCC: Multi-version concurrency control
+* Every transaction has an id (`xid`). Increasing 32-bit integer (2^32 = 4 billion)
+* Every row can have multiple versions, each has an `(xmin, xmax)`
+* Rows are only visible for read to `xid IN [xmin, xmax]`
+* `INSERT`: create version with `xmin = xid`
+* `DELETE`: create version with `xmax = xid`
+* `COMMIT`: set `committed[xid] = true`
+* Always read latest visible committed version
+
+## Rollbacks
+
+* Can leave versions lying around, bloating the db and indexes
+* `VACUUM` cleans these up
+* Postgres has `auto_vacuum`. Tuning this is a big deal for perf
 
 ---
