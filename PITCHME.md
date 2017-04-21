@@ -2,9 +2,9 @@
 
 # Perf, SQL, etc.
 
-### Lunch & Learn Apr 20, 2017
+### Lunch & Learn (Apr 21, 2017)
 
-##### Venky Iyer
+##### viyer
 
 ---
 
