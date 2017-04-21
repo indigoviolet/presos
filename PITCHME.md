@@ -30,4 +30,4 @@ Where in the stack is the perf bottleneck?
 
 ---
 
-
+![](images/opt-loop.png)
