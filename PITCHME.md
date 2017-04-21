@@ -26,8 +26,18 @@ Where in the stack is the perf bottleneck?
 
 +++
 
-![Layers](images/perf-layers.png)
+![](images/perf-layers.png)
 
 ---
 
 ![](images/opt-loop.png)
+
+---
+
+Profilers
+
++++
+
+![](images/profilers.png)
+
+----
