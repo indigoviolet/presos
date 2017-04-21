@@ -300,6 +300,10 @@ Logs are tables in motion -- Jay Kreps
 
 <hr />
 
+<p>👾</p>
+
+<hr />
+
 <h3>The Database</h3>
 
 <p>+++</p>
@@ -308,7 +312,7 @@ Logs are tables in motion -- Jay Kreps
 
 <p>+++</p>
 
-<h2>Parser -> Rewriter -> Optimizer -> Cost analysis -> Plan -> Execute</h2>
+<h3>Parser → Rewriter → Optimizer → Cost analysis → Execute</h3>
 
 <p>+++</p>
 
@@ -316,7 +320,9 @@ Logs are tables in motion -- Jay Kreps
 
 <p>+++</p>
 
-<p>Rewriter: Replace Views with underlying query tree</p>
+<h3>Rewriter</h3>
+
+<p>Replace Views with underlying query tree</p>
 
 <p>+++</p>
 
@@ -324,8 +330,37 @@ Logs are tables in motion -- Jay Kreps
 
 <ul>
 <li>How to scan tables</li>
-<li>How to join tables</li>
+<li>How to join tables (and in what order)</li>
 <li>Inlining, predicate pushdown etc</li>
+</ul>
+
+<p>📌</p>
+
+<p>+++</p>
+
+<h3>Cost analysis</h3>
+
+<p><code>postgresql.conf</code></p>
+
+<p>```
+seq<em>page</em>cost = 1.0                    # Read 8K Page from disk sequentially
+random<em>page</em>cost = 4.0                 # Random I/O
+cpu<em>tuple</em>cost = 0.01                  # Process a row
+cpu<em>index</em>tuple<em>cost = 0.005           # Process an index entry
+cpu</em>operator_cost = 0.0025             # Perform an operation</p>
+
+<p>```</p>
+
+<p>Goal: Find a good path fast enough so that it actually matters</p>
+
+<p>+++</p>
+
+<h3>Executor</h3>
+
+<ul>
+<li>stream-processing style dependency graph</li>
+<li>Parent node <em>pulls</em> on its children</li>
+<li>i.e. time to first row matters, as does generating all rows</li>
 </ul>
 
 <hr />

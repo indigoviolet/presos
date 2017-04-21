@@ -269,6 +269,10 @@ cf. Streams (Kafka/Kinesis etc.)
 
 ---
 
+👾
+
+---
+
 ### The Database
 
 +++
@@ -277,7 +281,7 @@ cf. Streams (Kafka/Kinesis etc.)
 
 +++
 
-## Parser -> Rewriter -> Optimizer -> Cost analysis -> Plan -> Execute
+### Parser → Rewriter → Optimizer → Cost analysis → Execute
 
 +++
 
@@ -285,14 +289,43 @@ cf. Streams (Kafka/Kinesis etc.)
 
 +++
 
-Rewriter: Replace Views with underlying query tree
+### Rewriter
+
+Replace Views with underlying query tree
 
 +++
 
 ### Optimizer
 
 * How to scan tables
-* How to join tables
+* How to join tables (and in what order)
 * Inlining, predicate pushdown etc
+
+📌
+
++++
+
+### Cost analysis
+
+`postgresql.conf`
+
+```
+seq_page_cost = 1.0                    # Read 8K Page from disk sequentially
+random_page_cost = 4.0                 # Random I/O
+cpu_tuple_cost = 0.01                  # Process a row
+cpu_index_tuple_cost = 0.005           # Process an index entry
+cpu_operator_cost = 0.0025             # Perform an operation
+
+```
+
+Goal: Find a good path fast enough so that it actually matters
+
++++
+
+### Executor
+
+* stream-processing style dependency graph
+* Parent node _pulls_ on its children
+* i.e. time to first row matters, as does generating all rows
 
 ---
