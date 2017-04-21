@@ -21,7 +21,7 @@
 
 <hr />
 
-<h1>Overview</h1>
+<h2>Overview</h2>
 
 <p>+++</p>
 
@@ -37,9 +37,71 @@
 
 <hr />
 
-<p>Where in the stack is the perf bottleneck?</p>
+<h2>Where in the stack is the perf bottleneck?</h2>
 
-<p>+++?image=images/perf-layers.png</p>
+<p>+++</p>
+
+<p><img src="diagrams/perf-stack.png" alt="perf-stack" title="" /></p>
+
+<hr />
+
+<h2>The optimization loop</h2>
+
+<p>+++</p>
+
+<p><img src="diagrams/opt-loop.png" alt="opt-loop" title="" /></p>
+
+<hr />
+
+<h2>Profilers</h2>
+
+<p>+++</p>
+
+<p><img src="diagrams/profilers.png" alt="profilers" title="" /></p>
+
+<hr />
+
+<h2>NewRelic</h2>
+
+<p>+++</p>
+
+<h3>Apdex</h3>
+
+<ul>
+<li>Response time setting to record "traces"</li>
+<li>satisfying &lt; tolerable (apdex<em>t) &lt; frustrating (apdex</em>f = 4 * apdex_t)</li>
+<li>Global setting of apdex_t = 300ms</li>
+<li>Can be changed on per-transaction level (for key transactions)</li>
+</ul>
+
+<p>+++</p>
+
+<h3>Custom instrumentation</h3>
+
+<p>Set or modify transaction names:</p>
+
+<p><code>ruby
+  NewRelic::Agent.set_transaction_name("#{transaction_name} - empty")
+</code>
++++</p>
+
+<p>Measure a block:</p>
+
+<p>```ruby
+   include ::NewRelic::Agent::MethodTracer</p>
+
+<p>self.trace<em>execution</em>scoped(['MessageThreadTagsController/log<em>work</em>action']) do
+     log<em>work</em>action(:message<em>thread</em>tagged, message<em>thread</em>tag, client<em>created</em>at: nil, thread<em>id: params[:message</em>thread<em>id].to</em>i)
+   end
+```</p>
+
+<p>+++</p>
+
+<p>Split out a method:</p>
+
+<p><code>ruby
+add_method_tracer :contacts_results, 'ClientSearch/contacts_results'
+</code></p>
 
 <hr />
 
