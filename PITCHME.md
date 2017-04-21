@@ -299,7 +299,9 @@ Replace Views with underlying query tree
 ### Optimizer
 
 * How to scan tables
+  * e.g. Sequential, Index
 * How to join tables (and in what order)
+  * e.g. Hash, Merge
 * Inlining, predicate pushdown etc
 
 📌
@@ -332,8 +334,9 @@ Goal: Find a good plan fast enough so that it actually matters
 * Estimate # of rows returned by query (each step in plan)
 * `ANALYZE` updates statistics
 * `auto_vacuum` runs `ANALYZE`
-* e.g. `n_distinct`, `most_common_vals` (and their frequencies),
-  `histogram_bounds` (distribution of values)
+  * `n_distinct`,
+  * `most_common_vals` (and their frequencies),
+  * `histogram_bounds` (distribution of values)
 
 👎  Assumes independence of columns
 
@@ -348,5 +351,20 @@ Goal: Find a good plan fast enough so that it actually matters
 ---
 
 🥑
+
+---
+
+## Tables and Indexes
+
+![index-table](diagrams/index-table.png)
+
+
+---
+
+## Reading a table
+
+* Cost depends on how much data you're reading
+* Index reads are random and expensive
+* Seq
 
 ---

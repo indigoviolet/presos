@@ -330,8 +330,14 @@ Logs are tables in motion -- Jay Kreps
 <h3>Optimizer</h3>
 
 <ul>
-<li>How to scan tables</li>
-<li>How to join tables (and in what order)</li>
+<li>How to scan tables
+<ul>
+<li>e.g. Sequential, Index</li>
+</ul></li>
+<li>How to join tables (and in what order)
+<ul>
+<li>e.g. Hash, Merge</li>
+</ul></li>
 <li>Inlining, predicate pushdown etc</li>
 </ul>
 
@@ -365,9 +371,12 @@ cpu</em>operator_cost = 0.0025             # Perform an operation</p>
 <ul>
 <li>Estimate # of rows returned by query (each step in plan)</li>
 <li><code>ANALYZE</code> updates statistics</li>
-<li><code>auto_vacuum</code> runs <code>ANALYZE</code></li>
-<li>e.g. <code>n_distinct</code>, <code>most_common_vals</code> (and their frequencies),
-<code>histogram_bounds</code> (distribution of values)</li>
+<li><code>auto_vacuum</code> runs <code>ANALYZE</code>
+<ul>
+<li><code>n_distinct</code>,</li>
+<li><code>most_common_vals</code> (and their frequencies),</li>
+<li><code>histogram_bounds</code> (distribution of values)</li>
+</ul></li>
 </ul>
 
 <p>👎  Assumes independence of columns</p>
@@ -385,6 +394,22 @@ cpu</em>operator_cost = 0.0025             # Perform an operation</p>
 <hr />
 
 <p>🥑</p>
+
+<hr />
+
+<h2>Tables and Indexes</h2>
+
+<p><img src="diagrams/index-table.png" alt="index-table" title="" /></p>
+
+<hr />
+
+<h2>Reading a table</h2>
+
+<ul>
+<li>Cost depends on how much data you're reading</li>
+<li>Index reads are random and expensive</li>
+<li>Seq</li>
+</ul>
 
 <hr />
 
