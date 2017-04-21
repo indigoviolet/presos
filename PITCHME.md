@@ -484,14 +484,16 @@ serialized_value    10000
 
 ```
 
+`ALTER TABLE SET STATISTICS`
+
++++
+
 [Note: catalog and system `pg_` tables
   * current processes
   * configuration
   * introspection
 ]
 
-
-`ALTER TABLE SET STATISTICS`
 
 +++
 
