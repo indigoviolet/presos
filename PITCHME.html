@@ -206,7 +206,7 @@ printer.print(open("./profile2.html", "w"))</p>
 <h3>Relation</h3>
 
 <blockquote>
-Given sets X1 , S, , . . . , S, (not necessarily
+Given sets X1 , S1, S2, . . , S, (not necessarily
 distinct), R is a relation on these n sets if it is a set of ntuples
 each of which has its first element from S1, its
 second element from Sz , and so on.
@@ -223,7 +223,7 @@ second element from Sz , and so on.
 <li>Durability: Write-ahead log</li>
 </ul>
 
-<p>+++</p>
+<hr />
 
 <h3>MVCC</h3>
 
@@ -256,6 +256,25 @@ second element from Sz , and so on.
 <li>If it wraps around -> 0, all rows have <code>xmin</code> > <code>xid</code> and become visible 💥</li>
 <li>Need to <code>VACUUM FREEZE</code> to set <code>xmin</code> to sentinel value</li>
 </ul>
+
+<hr />
+
+<h2>Write-ahead logs</h2>
+
+<ul>
+<li>Every <code>COMMIT</code>, write a binary log of the changes made to data</li>
+<li><p>Regularly <strong>checkpoint</strong>, ie. flush to durable storage</p></li>
+<li><p>Crash recovery: find last checkpoint and replay</p></li>
+<li>Replication: ship binary log over and replay</li>
+</ul>
+
+<p>+++</p>
+
+<h2>Log-table duality</h2>
+
+<blockquote>
+Logs are tables in motion
+</blockquote>
 
 <hr />
 

@@ -183,7 +183,7 @@ $> open profile2.html
 ### Relation
 
 <blockquote>
-Given sets X1 , S, , . . . , S, (not necessarily
+Given sets X1 , S1, S2, . . , S, (not necessarily
 distinct), R is a relation on these n sets if it is a set of ntuples
 each of which has its first element from S1, its
 second element from Sz , and so on.
@@ -199,7 +199,7 @@ second element from Sz , and so on.
 * Isolation: Concurrent transactions
 * Durability: Write-ahead log
 
-+++
+---
 
 ### MVCC
 
@@ -226,5 +226,23 @@ second element from Sz , and so on.
 * `xid` is 32-bit integer (2^32 = 4 billion)
 * If it wraps around -> 0, all rows have `xmin` > `xid` and become visible 💥
 * Need to `VACUUM FREEZE` to set `xmin` to sentinel value
+
+---
+
+## Write-ahead logs
+
+* Every `COMMIT`, write a binary log of the changes made to data
+* Regularly __checkpoint__, ie. flush to durable storage
+
+1. Crash recovery: find last checkpoint and replay
+2. Replication: ship binary log over and replay
+
++++
+
+## Log-table duality
+
+<blockquote>
+Logs are tables in motion
+</blockquote>
 
 ---
