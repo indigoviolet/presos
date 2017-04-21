@@ -461,7 +461,6 @@ Bitmap Heap Scan on users  (cost=4.53..89.50 rows=24 width=1713)
 * width
 * loops
 
-
 +++
 
 ### Control row estimates through statistics target
@@ -485,7 +484,44 @@ serialized_value    10000
 
 ```
 
+[Note: catalog and system `pg_` tables
+  * current processes
+  * configuration
+  * introspection
+]
+
+
 `ALTER TABLE SET STATISTICS`
+
++++
+
+## Caches
+
+`explain (analyze, costs, buffers) SELECT ...`
+
+```
+Hash Join  (cost=16168.11..41629.93 rows=547 width=104) (actual
+time=9181.876..9181.876 rows=0 loops=1)
+    Hash Cond: (queue_logs.message_thread_id = message_threads.id)
+      Buffers: shared hit=4 read=23779
+         Planning time: 53.332 ms
+         Execution time: 9182.123 ms
+
+```
+
++++
+
+Rerun:
+
+```
+Hash Join  (cost=16168.11..41629.93 rows=547 width=104) (actual
+time=183.323..183.323 rows=0 loops=1)
+    Hash Cond: (queue_logs.message_thread_id = message_threads.id)
+      Buffers: shared hit=23783
+      Planning time: 1.710 ms
+      Execution time: 183.571 ms
+
+```
 
 ---
 

@@ -532,7 +532,43 @@ serialized_value    10000
 
 <p>```</p>
 
+<p>[Note: catalog and system <code>pg_</code> tables
+  * current processes
+  * configuration
+  * introspection
+]</p>
+
 <p><code>ALTER TABLE SET STATISTICS</code></p>
+
+<p>+++</p>
+
+<h2>Caches</h2>
+
+<p><code>explain (analyze, costs, buffers) SELECT ...</code></p>
+
+<p>```
+Hash Join  (cost=16168.11..41629.93 rows=547 width=104) (actual
+time=9181.876..9181.876 rows=0 loops=1)
+    Hash Cond: (queue<em>logs.message</em>thread<em>id = message</em>threads.id)
+      Buffers: shared hit=4 read=23779
+         Planning time: 53.332 ms
+         Execution time: 9182.123 ms</p>
+
+<p>```</p>
+
+<p>+++</p>
+
+<p>Rerun:</p>
+
+<p>```
+Hash Join  (cost=16168.11..41629.93 rows=547 width=104) (actual
+time=183.323..183.323 rows=0 loops=1)
+    Hash Cond: (queue<em>logs.message</em>thread<em>id = message</em>threads.id)
+      Buffers: shared hit=23783
+      Planning time: 1.710 ms
+      Execution time: 183.571 ms</p>
+
+<p>```</p>
 
 <hr />
 
