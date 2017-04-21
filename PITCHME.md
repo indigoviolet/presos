@@ -178,22 +178,21 @@ $> open profile2.html
 
 +++
 
-* [EF Codd, a Relational Algebra](http://www.morganslibrary.net/files/codd-1970.pdf)
+[EF Codd, a Relational Algebra](http://www.morganslibrary.net/files/codd-1970.pdf)
 
-## Relation
+### Relation
 
-
-<quote>
+<blockquote>
 Given sets X1 , S, , . . . , S, (not necessarily
 distinct), R is a relation on these n sets if it is a set of ntuples
 each of which has its first element from S1, its
 second element from Sz , and so on.
-</quote>
+</blockquote>
 
 
 +++
 
-## What is ACID-compliant?
+## What is ACID-compliance?
 
 * Atomicity: Transaction that rolls back completely or commits completely
 * Consistency: Transaction rolls back on trigger failure or validation violation
@@ -202,7 +201,7 @@ second element from Sz , and so on.
 
 +++
 
-MVCC: Multi-version concurrency control (perspectives!)
+### MVCC
 
 * Every transaction has an id (`xid`)
 * Every row can have multiple versions, each has an `(xmin, xmax)`
