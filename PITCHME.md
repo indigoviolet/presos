@@ -182,12 +182,14 @@ $> open profile2.html
 
 ## Relation
 
-```
 
+<quote>
 Given sets X1 , S, , . . . , S, (not necessarily
 distinct), R is a relation on these n sets if it is a set of ntuples
 each of which has its first element from S1, its
 second element from Sz , and so on.
+</quote>
+
 
 +++
 
@@ -210,6 +212,8 @@ second element from Sz , and so on.
 * `DELETE`: create version with `xmax = xid`
 * `COMMIT`: set `committed[xid] = true`
 * Always read latest visible committed version
+
++++
 
 ## Rollbacks
 
