@@ -245,4 +245,16 @@ second element from Sz , and so on.
 Logs are tables in motion
 </blockquote>
 
+cf. Streams (Kafka/Kinesis etc.)
+
+---
+
+### `ActiveRecord`, `arel` etc
+
+![arel-1](diagrams/arel-1.png)
+
++++
+
+![arel-2](diagrams/arel-2.png)
+
 ---
