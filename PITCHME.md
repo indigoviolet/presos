@@ -202,10 +202,9 @@ second element from Sz , and so on.
 
 +++
 
-## Transactions are perspectival!
+MVCC: Multi-version concurrency control (perspectives!)
 
-* MVCC: Multi-version concurrency control
-* Every transaction has an id (`xid`). Increasing 32-bit integer (2^32 = 4 billion)
+* Every transaction has an id (`xid`)
 * Every row can have multiple versions, each has an `(xmin, xmax)`
 * Rows are only visible for read to `xid IN [xmin, xmax]`
 * `INSERT`: create version with `xmin = xid`
@@ -220,5 +219,13 @@ second element from Sz , and so on.
 * Can leave versions lying around, bloating the db and indexes
 * `VACUUM` cleans these up
 * Postgres has `auto_vacuum`. Tuning this is a big deal for perf
+
++++
+
+## xid Wraparound
+
+* `xid` is 32-bit integer (2^32 = 4 billion)
+* If it wraps around -> 0, all rows have `xmin` > `xid` and become visible 💥
+* Need to `VACUUM FREEZE` to set `xmin` to sentinel value
 
 ---

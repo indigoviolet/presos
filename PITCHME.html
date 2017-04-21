@@ -227,11 +227,10 @@ second element from Sz , and so on.
 
 <p>+++</p>
 
-<h2>Transactions are perspectival!</h2>
+<p>MVCC: Multi-version concurrency control (perspectives!)</p>
 
 <ul>
-<li>MVCC: Multi-version concurrency control</li>
-<li>Every transaction has an id (<code>xid</code>). Increasing 32-bit integer (2^32 = 4 billion)</li>
+<li>Every transaction has an id (<code>xid</code>)</li>
 <li>Every row can have multiple versions, each has an <code>(xmin, xmax)</code></li>
 <li>Rows are only visible for read to <code>xid IN [xmin, xmax]</code></li>
 <li><code>INSERT</code>: create version with <code>xmin = xid</code></li>
@@ -248,6 +247,16 @@ second element from Sz , and so on.
 <li>Can leave versions lying around, bloating the db and indexes</li>
 <li><code>VACUUM</code> cleans these up</li>
 <li>Postgres has <code>auto_vacuum</code>. Tuning this is a big deal for perf</li>
+</ul>
+
+<p>+++</p>
+
+<h2>xid Wraparound</h2>
+
+<ul>
+<li><code>xid</code> is 32-bit integer (2^32 = 4 billion)</li>
+<li>If it wraps around -> 0, all rows have <code>xmin</code> > <code>xid</code> and become visible 💥</li>
+<li>Need to <code>VACUUM FREEZE</code> to set <code>xmin</code> to sentinel value</li>
 </ul>
 
 <hr />
