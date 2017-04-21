@@ -368,23 +368,68 @@ Goal: Find a good plan fast enough so that it actually matters
 
 +++
 
-## Sequential scan
+## Sequential scan (when _selectivity_ is low)
 
 ![seq-scan](diagrams/seq-scan.png)
 
 +++
 
-## Index scan
+```sql
+explain analyze
+select id from users where id is not null;
+
+Seq Scan on users  (cost=0.00..992.41 rows=3241 width=4)
+  Filter: (id IS NOT NULL)
+```
+
++++
+
+## Index scan (when _selectivity_ is high)
 
 ![index-scan](diagrams/index-scan.png)
 
++++
+
+```sql
+explain
+select id from users where id=2;
+
+Index Only Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=4)
+  Index Cond: (id = 2)
+
+```
+
++++
+
 🍩  Index-_only_ scans: when **all** columns involved are indexed
+
+```sql
+explain
+select * from users where id=2;
+
+Index Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=1713)
+  Index Cond: (id = 2)
+```
 
 +++
 
 ## Bitmap Index Scan + Bitmap Heap Scan
 
+(when _selectivity_ is intermediate)
+
 ![bitmap-scan](diagrams/bitmap-scan.png)
 
++++
 
+```sql
+
+explain
+select * from users where id > 20 and id < 50;
+
+Bitmap Heap Scan on users  (cost=4.53..89.50 rows=24 width=1713)
+  Recheck Cond: ((id > 20) AND (id < 50))
+    ->  Bitmap Index Scan on users_pkey  (cost=0.00..4.52 rows=24 width=0)
+            Index Cond: ((id > 20) AND (id < 50))
+
+```
 ---

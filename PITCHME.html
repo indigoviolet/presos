@@ -413,25 +413,70 @@ cpu</em>operator_cost = 0.0025             # Perform an operation</p>
 
 <p>+++</p>
 
-<h2>Sequential scan</h2>
+<h2>Sequential scan (when <em>selectivity</em> is low)</h2>
 
 <p><img src="diagrams/seq-scan.png" alt="seq-scan" title="" /></p>
 
 <p>+++</p>
 
-<h2>Index scan</h2>
+<p>```sql
+explain analyze
+select id from users where id is not null;</p>
+
+<p>Seq Scan on users  (cost=0.00..992.41 rows=3241 width=4)
+  Filter: (id IS NOT NULL)
+```</p>
+
+<p>+++</p>
+
+<h2>Index scan (when <em>selectivity</em> is high)</h2>
 
 <p><img src="diagrams/index-scan.png" alt="index-scan" title="" /></p>
 
+<p>+++</p>
+
+<p>```sql
+explain
+select id from users where id=2;</p>
+
+<p>Index Only Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=4)
+  Index Cond: (id = 2)</p>
+
+<p>```</p>
+
+<p>+++</p>
+
 <p>🍩  Index-<em>only</em> scans: when <strong>all</strong> columns involved are indexed</p>
+
+<p>```sql
+explain
+select * from users where id=2;</p>
+
+<p>Index Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=1713)
+  Index Cond: (id = 2)
+```</p>
 
 <p>+++</p>
 
 <h2>Bitmap Index Scan + Bitmap Heap Scan</h2>
 
+<p>(when <em>selectivity</em> is intermediate)</p>
+
 <p><img src="diagrams/bitmap-scan.png" alt="bitmap-scan" title="" /></p>
 
-<hr />
+<p>+++</p>
+
+<p>```sql</p>
+
+<p>explain
+select * from users where id > 20 and id &lt; 50;</p>
+
+<p>Bitmap Heap Scan on users  (cost=4.53..89.50 rows=24 width=1713)
+  Recheck Cond: ((id > 20) AND (id &lt; 50))
+    ->  Bitmap Index Scan on users_pkey  (cost=0.00..4.52 rows=24 width=0)
+            Index Cond: ((id > 20) AND (id &lt; 50))</p>
+
+<h2>```</h2>
 
 </body>
 </html>
