@@ -26,11 +26,10 @@
 <p>+++</p>
 
 <ul>
-<li>Identifying perf problems</li>
-<li>Montage: SQL operations/internals</li>
-<li>What affects SQL query performance</li>
-<li>EXPLAIN output</li>
-<li>Redshift SQL &amp; Hive SQL</li>
+<li>Diagnosing perf problems</li>
+<li>ActiveRecord -> EXPLAIN (SQL internals)</li>
+<li>Bonus 1 (Redshift)</li>
+<li>Bonus 2 (Hive)</li>
 </ul>
 
 <!-- Caveats about I am not an expert -->
@@ -568,7 +567,182 @@ serialized_value    10000
 
 <h3>Merge join</h3>
 
-<h2><img src="diagrams/merge-join.png" alt="merge-join" title="" /></h2>
+<p><img src="diagrams/merge-join.png" alt="merge-join" title="" /></p>
+
+<hr />
+
+<h3>Other operations</h3>
+
+<ul>
+<li>Sort (<code>ORDER BY</code>)</li>
+<li>Hash Aggregate (<code>GROUP BY</code>)</li>
+<li>CTEs (<code>WITH</code>) -- 😲  <em>optimization fences</em></li>
+<li>Materialize (save loops)</li>
+</ul>
+
+<hr />
+
+<h3>Experimenting with different strategies</h3>
+
+<p><code>
+enable_bitmapscan = on
+enable_hashagg = on
+enable_hashjoin = on
+enable_indexscan = on
+enable_indexonlyscan = on
+enable_material = on
+enable_mergejoin = on
+enable_nestloop = on
+enable_seqscan = on
+enable_sort = on
+enable_tidscan = on
+</code></p>
+
+<hr />
+
+<h2>Optimization in practice</h2>
+
+<ul>
+<li>Measure, profile</li>
+<li>Batch things (reads &amp; writes, round trips are expensive)</li>
+<li>Do things once (no n+1s)</li>
+<li>Precompute it</li>
+<li>Cache it</li>
+<li>Understand why it doesn't work as you expect</li>
+<li>Add the right indices.</li>
+<li>Experiment. Measure.</li>
+<li>set statistics (maybe other settings, like memory?), <code>ANALYZE</code>, <code>VACUUM</code></li>
+<li>Work around the problem cases</li>
+<li>Buy bigger boxes</li>
+</ul>
+
+<hr />
+
+<p>🌼</p>
+
+<hr />
+
+<h2>Bonus 1: Redshift</h2>
+
+<ul>
+<li>No indexes</li>
+<li>Sharded (data distributed over multiple nodes)</li>
+</ul>
+
+<p>+++</p>
+
+<h3>Principles</h3>
+
+<ul>
+<li>Moving data is bad (bring the compute to the data)</li>
+<li>Filtering data is good</li>
+<li>Distributing computation is good</li>
+</ul>
+
+<p>+++</p>
+
+<h3><code>DISTKEY</code> &amp; <code>DISTSTYLE</code></h3>
+
+<ul>
+<li>How to shard
+<ul>
+<li>EVEN</li>
+<li>ALL</li>
+<li>KEY (set <code>DISTKEY</code>)</li>
+</ul></li>
+<li><code>JOIN</code> keys should be <code>diststyle=KEY</code></li>
+<li>Small dimension tables should be <code>ALL</code></li>
+<li>distribution should not be skewed</li>
+</ul>
+
+<p>+++</p>
+
+<h3><code>SORTKEY</code></h3>
+
+<ul>
+<li>Filter keys should be <code>SORTKEY</code></li>
+</ul>
+
+<hr />
+
+<h2>Bonus 2: SQL over Map Reduce</h2>
+
+<p>(eg. Hive, Presto)</p>
+
+<p>+++</p>
+
+<h2>MapReduce (eg. Hadoop)</h2>
+
+<ul>
+<li>Data is sharded across compute nodes (lives on a <em>distributed</em> file system)</li>
+<li>Compute nodes can behave as <code>mapper</code>s or <code>reducers</code></li>
+</ul>
+
+<p>+++</p>
+
+<h3>Principles</h3>
+
+<ul>
+<li>Moving data is bad (bring the compute to the data)</li>
+<li>Filtering data is good</li>
+<li>Distributing computation is good</li>
+</ul>
+
+<p>+++</p>
+
+<h3>Steps</h3>
+
+<ol>
+<li>Map phase</li>
+<li>Hash partition + Local sort</li>
+<li>Distribute</li>
+<li>Merge sort</li>
+<li>Reduce</li>
+</ol>
+
+<p>+++</p>
+
+<h3>Map (Mapper node)</h3>
+
+<ul>
+<li>Read the shard of data on the current node</li>
+<li>Perform an operation on each row, one at a time</li>
+<li>Emit the row</li>
+</ul>
+
+<p>+++</p>
+
+<h3>Hash Partition + Local Sort (Mapper node)</h3>
+
+<ul>
+<li>Hash partition (ie. shard) the output across Reducer nodes</li>
+<li>Sort each partition</li>
+</ul>
+
+<h3>Distribute + Merge sort (Reducer node)</h3>
+
+<ul>
+<li>Pull your shards from all the mappers</li>
+<li>Merge sort</li>
+<li>Apply <code>reduce()</code> to each group (already sorted)</li>
+</ul>
+
+<p>+++</p>
+
+<p><img src="diagrams/mapreduce-join.png" alt="mapreduce-join" title="" /></p>
+
+<p>+++</p>
+
+<h3>SQL -> Mapreduce</h3>
+
+<ul>
+<li><code>WHERE</code> = map</li>
+<li><code>ORDER BY</code> = sort</li>
+<li><code>GROUP BY</code> = reduce</li>
+<li><code>JOIN</code> = hash partition on join keys and merge join</li>
+</ul>
+
+<hr />
 
 </body>
 </html>

@@ -12,11 +12,10 @@
 
 +++
 
- * Identifying perf problems
- * Montage: SQL operations/internals
- * What affects SQL query performance
- * EXPLAIN output
- * Redshift SQL & Hive SQL
+* Diagnosing perf problems
+* ActiveRecord -> EXPLAIN (SQL internals)
+* Bonus 1 (Redshift)
+* Bonus 2 (Hive)
 
 <!-- Caveats about I am not an expert -->
 
@@ -451,7 +450,6 @@ Bitmap Heap Scan on users  (cost=4.53..89.50 rows=24 width=1713)
 * `EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON)` : more stats about
   how much data was read etc.
 
-
 +++
 
 ```
@@ -523,4 +521,150 @@ serialized_value    10000
 ### Merge join
 
 ![merge-join](diagrams/merge-join.png)
+
+---
+
+### Other operations
+
+* Sort (`ORDER BY`)
+* Hash Aggregate (`GROUP BY`)
+* CTEs (`WITH`) -- 😲  _optimization fences_
+* Materialize (save loops)
+
+---
+
+### Experimenting with different strategies
+
+```
+enable_bitmapscan = on
+enable_hashagg = on
+enable_hashjoin = on
+enable_indexscan = on
+enable_indexonlyscan = on
+enable_material = on
+enable_mergejoin = on
+enable_nestloop = on
+enable_seqscan = on
+enable_sort = on
+enable_tidscan = on
+```
+
+---
+
+## Optimization in practice
+
+* Measure, profile
+* Batch things (reads & writes, round trips are expensive)
+* Do things once (no n+1s)
+* Precompute it
+* Cache it
+* Understand why it doesn't work as you expect
+* Add the right indices.
+* Experiment. Measure.
+* set statistics (maybe other settings, like memory?), `ANALYZE`, `VACUUM`
+* Work around the problem cases
+* Buy bigger boxes
+
+---
+
+🌼
+
+---
+
+## Bonus 1: Redshift
+
+* No indexes
+* Sharded (data distributed over multiple nodes)
+
++++
+
+### Principles
+
+* Moving data is bad (bring the compute to the data)
+* Filtering data is good
+* Distributing computation is good
+
++++
+
+### `DISTKEY` & `DISTSTYLE`
+
+* How to shard
+  * EVEN
+  * ALL
+  * KEY (set `DISTKEY`)
+* `JOIN` keys should be `diststyle=KEY`
+* Small dimension tables should be `ALL`
+* distribution should not be skewed
+
++++
+
+### `SORTKEY`
+
+* Filter keys should be `SORTKEY`
+
+---
+
+## Bonus 2: SQL over Map Reduce
+
+(eg. Hive, Presto)
+
++++
+
+## MapReduce (eg. Hadoop)
+
+* Data is sharded across compute nodes (lives on a _distributed_ file system)
+* Compute nodes can behave as `mapper`s or `reducers`
+
++++
+
+### Principles
+
+* Moving data is bad (bring the compute to the data)
+* Filtering data is good
+* Distributing computation is good
+
++++
+
+### Steps
+
+1. Map phase
+2. Hash partition + Local sort
+3. Distribute
+4. Merge sort
+5. Reduce
+
++++
+
+### Map (Mapper node)
+
+* Read the shard of data on the current node
+* Perform an operation on each row, one at a time
+* Emit the row
+
++++
+
+### Hash Partition + Local Sort (Mapper node)
+
+* Hash partition (ie. shard) the output across Reducer nodes
+* Sort each partition
+
+### Distribute + Merge sort (Reducer node)
+
+* Pull your shards from all the mappers
+* Merge sort
+* Apply `reduce()` to each group (already sorted)
+
++++
+
+![mapreduce-join](diagrams/mapreduce-join.png)
+
++++
+
+### SQL -> Mapreduce
+
+* `WHERE` = map
+* `ORDER BY` = sort
+* `GROUP BY` = reduce
+* `JOIN` = hash partition on join keys and merge join
+
 ---
