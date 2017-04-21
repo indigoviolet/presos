@@ -553,6 +553,9 @@ enable_tidscan = on
 * Do things once (no n+1s)
 * Precompute it
 * Cache it
+
++++
+
 * Understand why it doesn't work as you expect
 * Add the right indices.
 * Experiment. Measure.
