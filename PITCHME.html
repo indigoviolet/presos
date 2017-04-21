@@ -407,9 +407,29 @@ cpu</em>operator_cost = 0.0025             # Perform an operation</p>
 
 <ul>
 <li>Cost depends on how much data you're reading</li>
-<li>Index reads are random and expensive</li>
-<li>Seq</li>
+<li>Index reads are random and expensive (but you can read only what you want)</li>
+<li>Sequential reads are cheap (but you have to read all of it)</li>
 </ul>
+
+<p>+++</p>
+
+<h2>Sequential scan</h2>
+
+<p><img src="diagrams/seq-scan.png" alt="seq-scan" title="" /></p>
+
+<p>+++</p>
+
+<h2>Index scan</h2>
+
+<p><img src="diagrams/index-scan.png" alt="index-scan" title="" /></p>
+
+<p>🍩  Index-<em>only</em> scans: when <strong>all</strong> <code>SELECT</code> columns are indexed</p>
+
+<p>+++</p>
+
+<h2>Bitmap Index Scan + Bitmap Heap Scan</h2>
+
+<p><img src="diagrams/bitmap-scan.png" alt="bitmap-scan" title="" /></p>
 
 <hr />
 

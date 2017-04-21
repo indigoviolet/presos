@@ -358,13 +358,33 @@ Goal: Find a good plan fast enough so that it actually matters
 
 ![index-table](diagrams/index-table.png)
 
-
 ---
 
 ## Reading a table
 
 * Cost depends on how much data you're reading
-* Index reads are random and expensive
-* Seq
+* Index reads are random and expensive (but you can read only what you want)
+* Sequential reads are cheap (but you have to read all of it)
+
++++
+
+## Sequential scan
+
+![seq-scan](diagrams/seq-scan.png)
+
++++
+
+## Index scan
+
+![index-scan](diagrams/index-scan.png)
+
+🍩  Index-_only_ scans: when **all** `SELECT` columns are indexed
+
++++
+
+## Bitmap Index Scan + Bitmap Heap Scan
+
+![bitmap-scan](diagrams/bitmap-scan.png)
+
 
 ---
