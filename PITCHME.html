@@ -65,12 +65,12 @@
 
 <p>+++</p>
 
-<h3>Apdex</h3>
+<h3>Apdex = % satisfactory response times</h3>
 
 <ul>
-<li>Response time setting to record "traces"</li>
-<li>satisfying &lt; tolerable (apdex<em>t) &lt; frustrating (apdex</em>f = 4 * apdex_t)</li>
-<li>Global setting of apdex_t = 300ms</li>
+<li>satisfying &lt; tolerable (T) &lt; frustrating (4T)</li>
+<li>Global setting of T = 300ms</li>
+<li>Response time setting to record "traces" >= 4T</li>
 <li>Can be changed on per-transaction level (for key transactions)</li>
 </ul>
 
@@ -81,7 +81,15 @@
 <p>Set or modify transaction names:</p>
 
 <p><code>ruby
-  NewRelic::Agent.set_transaction_name("#{transaction_name} - empty")
+  def contacts_results(search_term, tags, page_number: 0, paginate: true)
+    transaction_name = NewRelic::Agent.get_transaction_name
+    if search_term.blank?
+      NewRelic::Agent.set_transaction_name("#{transaction_name} - empty")
+    elsif UserConfig.value_for_user_id_and_key(@user.id, 'experimental-search').to_b
+      NewRelic::Agent.set_transaction_name("#{transaction_name} - experimental")
+    elsif search_term.split(/\s+/).length &gt; 3
+      NewRelic::Agent.set_transaction_name("#{transaction_name} - long")
+    end
 </code>
 +++</p>
 
@@ -102,6 +110,35 @@
 <p><code>ruby
 add_method_tracer :contacts_results, 'ClientSearch/contacts_results'
 </code></p>
+
+<p>+++</p>
+
+<p>[notes]</p>
+
+<ul>
+<li>transactions</li>
+<li>traces</li>
+<li>database</li>
+<li>dashboards</li>
+<li>throughput v. slow queries</li>
+<li>percentiles</li>
+</ul>
+
+<hr />
+
+<p><code>!debug</code></p>
+
+<ul>
+<li>Turn log level to DEBUG (shows Elasticsearch queries)</li>
+<li>Pipe the ActiveRecord query logs to STDOUT</li>
+<li>shows backtraces etc</li>
+</ul>
+
+<p>[demo]</p>
+
+<p>+++</p>
+
+<p><a href="https://github.com/finventures/fin-core-beta/blob/master/.pryrc"><code>.pryrc</code></a></p>
 
 <hr />
 

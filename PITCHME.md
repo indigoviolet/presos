@@ -50,11 +50,11 @@
 
 +++
 
-### Apdex
+### Apdex = % satisfactory response times
 
-* Response time setting to record "traces"
-* satisfying < tolerable (apdex_t) < frustrating (apdex_f = 4 * apdex_t)
-* Global setting of apdex_t = 300ms
+* satisfying < tolerable (T) < frustrating (4T)
+* Global setting of T = 300ms
+* Response time setting to record "traces" >= 4T
 * Can be changed on per-transaction level (for key transactions)
 
 +++
@@ -64,7 +64,15 @@
 Set or modify transaction names:
 
 ```ruby
-  NewRelic::Agent.set_transaction_name("#{transaction_name} - empty")
+  def contacts_results(search_term, tags, page_number: 0, paginate: true)
+    transaction_name = NewRelic::Agent.get_transaction_name
+    if search_term.blank?
+      NewRelic::Agent.set_transaction_name("#{transaction_name} - empty")
+    elsif UserConfig.value_for_user_id_and_key(@user.id, 'experimental-search').to_b
+      NewRelic::Agent.set_transaction_name("#{transaction_name} - experimental")
+    elsif search_term.split(/\s+/).length > 3
+      NewRelic::Agent.set_transaction_name("#{transaction_name} - long")
+    end
 ```
 +++
 
@@ -85,5 +93,30 @@ Split out a method:
 ```ruby
 add_method_tracer :contacts_results, 'ClientSearch/contacts_results'
 ```
+
++++
+
+[notes]
+
+* transactions
+* traces
+* database
+* dashboards
+* throughput v. slow queries
+* percentiles
+
+---
+
+`!debug`
+
+* Turn log level to DEBUG (shows Elasticsearch queries)
+* Pipe the ActiveRecord query logs to STDOUT
+* shows backtraces etc
+
+[demo]
+
++++
+
+[`.pryrc`](https://github.com/finventures/fin-core-beta/blob/master/.pryrc)
 
 ---
